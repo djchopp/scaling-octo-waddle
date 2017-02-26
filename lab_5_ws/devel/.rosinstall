@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/ros/EE5900_Repos/scaling-octo-waddle/lab_5_ws/devel/setup.sh
