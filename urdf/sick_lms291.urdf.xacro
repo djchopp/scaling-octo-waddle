@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="lms291_lrf">
+
+  <!-- LMS291 Lidar model -->
+  <link name="lms291">
+  
+    <inertial>
+      <mass value="4.5" />
+      <origin xyz="0 0 0" />
+      <inertia
+      ixx="1.0" ixy="0.0" ixz="0.0"
+      iyy="1.0" iyz="0.0"
+      izz="1.0"/>
+    </inertial>
+    
+    <visual>
+      <origin xyz="0 0 0.0925" rpy="0 0 0" />
+      <geometry>
+        <box size="0.155 0.156 0.185"/>
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    
+    <collision>
+      <origin xyz="0 0 0.0925" rpy="0 0 0" />
+      <geometry>
+        <box size="0.155 0.156 0.185"/>
+      </geometry>
+    </collision>
+    
+  </link>
+
+  <!-- Link for LMS291 to Jackal -->
+  <joint name="lms291_mount" type="fixed">
+    <parent link="front_mount"/>
+    <child link="lms291"/>
+  </joint>
+  
+  <gazebo reference="lms291">
+    <turnGravityOff>true</turnGravityOff>
+    <sensor type="ray" name="lms291">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>75</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>0.25</resolution>
+            <min_angle>-1.570796</min_angle>
+            <max_angle>1.570796</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.10</min>
+          <max>30.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.001</stddev>
+        </noise>
+      </ray>
+      <plugin name="gazebo_ros_laser" filename="libgazebo_ros_laser.so">
+        <topicName>scan</topicName>
+        <frameName>lms291</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+    
+</robot>
