@@ -14,9 +14,9 @@
     </inertial>
     
     <visual>
-      <origin xyz="0 0 0.0925" rpy="0 0 0" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <box size="0.155 0.156 0.185"/>
+        <mesh filename="package://drive_jackal/mesh/lms291_asm.stl"/>
       </geometry>
       <material name="white">
         <color rgba="1 1 1 1"/>

@@ -1,5 +1,4 @@
 <launch>
-  
   <node name="sicklms" pkg="sicktoolbox_wrapper" type="sicklms" args="_port:=/dev/ttyS0 _baud:=38400  _frame_id:=lms291"/>
 
   <node pkg="drive_jackal" name="auto_drive" type="fill_it.py" required="true" output="screen" />
