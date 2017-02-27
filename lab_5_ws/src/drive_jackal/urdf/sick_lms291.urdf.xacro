@@ -1,9 +1,17 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="lms291_lrf">
+  <xacro:property name="PI" value="3.1415926535897931" />
 
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+  
+  <material name="blue">
+    <color rgba="0 0 .8 1"/>
+  </material>
+  
   <!-- LMS291 Lidar model -->
   <link name="lms291">
-  
     <inertial>
       <mass value="4.5" />
       <origin xyz="0 0 0" />
@@ -14,28 +22,59 @@
     </inertial>
     
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://drive_jackal/mesh/lms291_asm.stl"/>
+        <mesh filename="package://drive_jackal/mesh/lms291_asm.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="white">
-        <color rgba="1 1 1 1"/>
-      </material>
+      <material name="white"/>
     </visual>
     
     <collision>
-      <origin xyz="0 0 0.0925" rpy="0 0 0" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
         <box size="0.155 0.156 0.185"/>
       </geometry>
     </collision>
+  </link>
+  
+  
+  <!-- LMS291 Lidar Mount model -->
+  <link name="lms291_mount">
+    <inertial>
+      <mass value="0.4" />
+      <origin xyz="0 0 0" />
+      <inertia
+      ixx="0.0" ixy="0.0" ixz="0.0"
+      iyy="0.0" iyz="0.0"
+      izz="0.0"/>
+    </inertial>
     
+    <visual>
+      <geometry>
+        <mesh filename="package://drive_jackal/mesh/LidarMount.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    
+    <collision>
+      <origin xyz="0 0 0.0925" rpy="${PI} 0 0" />
+      <geometry>
+        <box size="0.155 0.156 0.185"/>
+      </geometry>
+    </collision>
   </link>
 
-  <!-- Link for LMS291 to Jackal -->
-  <joint name="lms291_mount" type="fixed">
-    <parent link="front_mount"/>
+  <!-- Link for LMS291 to Mount -->
+  <joint name="lms291_to_mount" type="fixed">
+    <origin xyz="0 -0.093 0.078" rpy="0 0 ${PI/2}" />
+    <parent link="lms291_mount"/>
     <child link="lms291"/>
+  </joint>
+  
+  <!-- Link for Mount to Jackal -->
+  <joint name="lms291_mount_to_jackal" type="fixed">
+    <origin xyz="-0.090 0 0" rpy="0 0 ${PI/2}" />
+    <parent link="front_mount"/>
+    <child link="lms291_mount"/>
   </joint>
   
   <gazebo reference="lms291">

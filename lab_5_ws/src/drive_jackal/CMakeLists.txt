@@ -202,7 +202,7 @@ catkin_package(
 
 # Generate a urdf based on the xacro file
 find_package(xacro REQUIRED)
-set(output_filename $ENV{JACKAL_URDF_EXTRAS}SICK.urdf)
+set(output_filename $ENV{JACKAL_URDF_EXTRAS})
 message("${BoldYellow}JACKAL_URDF_EXTRAS will be generated at ${output_filename}${ColourReset}")
 xacro_add_xacro_file(${CMAKE_CURRENT_SOURCE_DIR}/urdf/sick_lms291.urdf.xacro ${output_filename})
 add_custom_target(urdf_files ALL DEPENDS ${output_filename})
