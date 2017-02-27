@@ -65,7 +65,28 @@
     </collision>
   </link>
 
-  <link name="lms291_data"/>
+  <link name="lms291_data">
+    <inertial>
+      <mass value="0.00001" />
+      <origin xyz="0 0 0" />
+      <inertia
+      ixx="0.00001" ixy="0.0" ixz="0.0"
+      iyy="0.00001" iyz="0.0"
+      izz="0.00001"/>
+    </inertial>
+    
+    <visual>
+      <geometry>
+        <sphere radius="0.00001"/>
+      </geometry>
+    </visual>
+    
+    <collision>
+      <geometry>
+        <sphere radius="0.00001"/>
+      </geometry>
+    </collision>
+  </link>
 
 
   <!-- Link for Scan data to LMS291 -->
