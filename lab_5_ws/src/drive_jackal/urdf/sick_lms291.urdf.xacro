@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="lms291_lrf">
   <xacro:property name="PI" value="3.1415926535897931" />
-
-  <material name="white">
-    <color rgba="1 1 1 1"/>
-  </material>
   
   <material name="blue">
-    <color rgba="0 0 .8 1"/>
+    <color rgba="0 0 1 1"/>
   </material>
+  
+  <material name="grey">
+    <color rgba=".3 .3 .3 1.0"/>
+  </material>
+  
+
   
   <!-- LMS291 Lidar model -->
   <link name="lms291">
@@ -25,7 +27,7 @@
       <geometry>
         <mesh filename="package://drive_jackal/mesh/lms291_asm.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="white"/>
+      <material name="blue"/>
     </visual>
     
     <collision>
@@ -52,7 +54,7 @@
       <geometry>
         <mesh filename="package://drive_jackal/mesh/LidarMount.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="blue"/>
+      <material name="grey"/>
     </visual>
     
     <collision>
@@ -62,6 +64,16 @@
       </geometry>
     </collision>
   </link>
+
+  <link name="lms291_data"/>
+
+
+  <!-- Link for Scan data to LMS291 -->
+  <joint name="scan_to_lms291" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 ${PI}" />
+    <parent link="lms291"/>
+    <child link="lms291_data"/>
+  </joint>
 
   <!-- Link for LMS291 to Mount -->
   <joint name="lms291_to_mount" type="fixed">
@@ -76,8 +88,11 @@
     <parent link="front_mount"/>
     <child link="lms291_mount"/>
   </joint>
-  
+
+
+
   <gazebo reference="lms291">
+    <material>Gazebo/Blue</material>
     <turnGravityOff>true</turnGravityOff>
     <sensor type="ray" name="lms291">
       <pose>0 0 0 0 0 0</pose>
@@ -109,5 +124,8 @@
       </plugin>
     </sensor>
   </gazebo>
-    
+  
+  <gazebo reference="lms291_mount">
+    <material>Gazebo/Grey</material>
+  </gazebo>
 </robot>

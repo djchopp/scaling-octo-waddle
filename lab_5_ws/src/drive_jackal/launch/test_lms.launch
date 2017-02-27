@@ -1,0 +1,3 @@
+<launch>
+  <node name="sicklms" pkg="sicktoolbox_wrapper" type="sicklms" args="_port:=/dev/ttyS0 _baud:=38400  _frame_id:=lms291_data"/>
+</launch>
