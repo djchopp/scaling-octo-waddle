@@ -15,11 +15,11 @@ from sensor_msgs.msg import LaserScan
 
 
 # Global variables for random bounds
-scale       =  1
-angular_min = -1 
-linear_min  = -1 
-angular_max =  1 
-linear_max  =  1
+scale       =  0.4
+angular_min = -0.25
+linear_min  = -0.5 
+angular_max =  0.25
+linear_max  =  0.5
 
 start_time  =  0
 
@@ -94,7 +94,7 @@ def Callback(data):
         linear_max  = 0 * scale
       
     # All Clear, randomly drive forward with varying turn  
-    elif (frontAve > 2) and (leftAve > side_thresh) and (rightAve > side_thresh) :
+    elif (frontAve > 3) and (leftAve > side_thresh) and (rightAve > side_thresh) :
         angular_min = -1.25 * scale
         angular_max = 1.25 * scale
         linear_min  = 0.50 * scale
@@ -123,7 +123,7 @@ def setup():
     rospy.init_node("jackal_map")
 
     # subscribe to all
-    rospy.Subscriber("/front/scan", LaserScan, Callback)
+    rospy.Subscriber("/scan", LaserScan, Callback)
     # rate = rospy.Rate(user_rate)
     rate = rospy.Rate(50)
 
@@ -144,7 +144,7 @@ def setup():
             count = count + 1
         else :
             count = 0
-            countLimit = random.randrange(5,25)
+            countLimit = random.randrange(10,35)
             randLin = random.uniform(linear_min,linear_max)
             randAng = random.uniform(angular_min,angular_max)
 
