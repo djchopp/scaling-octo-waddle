@@ -137,7 +137,7 @@ def setup():
     randAng = float(0.0)
     
     # loop
-    while not time.time()-start_time>600:
+    while not time.time()-start_time>60:
 
         # generate random movement mapping at random interval
         if count < countLimit :
@@ -158,20 +158,6 @@ def setup():
         pub = rospy.Publisher("/jackal_velocity_controller/cmd_vel", Twist, queue_size=10)
 
         rate.sleep()
-
-    #start save map
-    package ='map_server'
-    executable ='map_saver'
-    node = roslaunch.core.Node(package, executable, args="-f "+str(os.path.dirname(os.path.realpath(__file__)))+"/saved_map")
-    
-	
-    launch = roslaunch.scriptapi.ROSLaunch()
-    launch.start()
-
-    process = launch.launch(node)
-    while process.is_alive():
-        print process.is_alive()
-    rospy.loginfo("-f "+str(os.path.dirname(os.path.realpath(__file__)))+"/saved_map")
 
 
 # standard ros boilerplate

@@ -4,6 +4,6 @@
 
   <node pkg="drive_jackal" name="auto_drive" type="auto_drive.py" required="true"/>
   
-  <node pkg="rosbag" type="record" name="record_tf" args="-O $(find drive_jackal)/bags/nav /tf /scan"/>
+  <!-- node pkg="rosbag" type="record" name="record_tf" args="-O $(find drive_jackal)/bags/nav /tf /scan"/ -->
 
 </launch>
