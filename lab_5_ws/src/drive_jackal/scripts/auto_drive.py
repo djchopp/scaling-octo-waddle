@@ -15,21 +15,21 @@ from sensor_msgs.msg import LaserScan
 
 
 # Global variables for random bounds
-scale       =  0.5
+scale       =  0.75
 angular_min = -0.25
 linear_min  = -0.5
 angular_max =  0.25
 linear_max  =  0.5
-linear_acc  =  0.01
-angular_acc =  0.005
+linear_acc  =  0.05
+angular_acc =  0.025
 
 start_time  =  0
 
 # Constants for laser averaging
-front_delta = 15
-side_ang    = 30
+front_delta = 12.5
+side_ang    = 25
 side_delta  = 15
-side_thresh = 1.35
+side_thresh = 2
 
 
 # Radian to degree function
@@ -134,7 +134,7 @@ def setup():
 
     # Variables for messages and timing
     count = 0
-    countLimit = random.randrange(25,75)
+    countLimit = random.randrange(5,25)
     randLin = float(0.0)
     randAng = float(0.0)
     linSet = float(0.0)
@@ -148,7 +148,7 @@ def setup():
             count = count + 1
         else :
             count = 0
-            countLimit = random.randrange(10,35)
+            countLimit = random.randrange(10,30)
             randLin = random.uniform(linear_min,linear_max)
             randAng = random.uniform(angular_min,angular_max)
 
