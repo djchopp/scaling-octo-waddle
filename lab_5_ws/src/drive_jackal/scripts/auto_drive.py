@@ -20,6 +20,8 @@ angular_min = -0.25
 linear_min  = -0.5
 angular_max =  0.25
 linear_max  =  0.5
+linear_acc  =  0.01
+angular_acc =  0.005
 
 start_time  =  0
 
@@ -135,6 +137,8 @@ def setup():
     countLimit = random.randrange(25,75)
     randLin = float(0.0)
     randAng = float(0.0)
+    linSet = float(0.0)
+    angSet = float(0.0)
 
     # loop
     while not time.time()-start_time>300:
@@ -148,9 +152,32 @@ def setup():
             randLin = random.uniform(linear_min,linear_max)
             randAng = random.uniform(angular_min,angular_max)
 
+        # Basic acceleration code
+        if (randLin > linSet):
+            if (randLin > (linSet + linear_acc)):
+                linSet = linSet + linear_acc
+            else :
+                linSet = randLin
+        else :
+            if (randLin < (linSet - linear_acc)):
+                linSet = linSet - linear_acc
+            else :
+                linSet = randLin
+                
+        if (randAng > angSet):
+            if (randAng > (angSet + angular_acc)):
+                angSet = angSet + angular_acc
+            else :
+                angSet = randAng
+        else :
+            if (randAng < (angSet - angular_acc)):
+                angSet = angSet - angular_acc
+            else :
+                angSet = randAng
+
         # push Twist msgs
-        linear_msg  = Vector3(x=randLin, y=float(0.0), z=float(0.0))
-        angular_msg = Vector3(x=float(0.0), y=float(0.0), z=randAng)
+        linear_msg  = Vector3(x=linSet, y=float(0.0), z=float(0.0))
+        angular_msg = Vector3(x=float(0.0), y=float(0.0), z=angSet)
         publish_msg = Twist(linear=linear_msg, angular=angular_msg)
 
 		# publish Twist
