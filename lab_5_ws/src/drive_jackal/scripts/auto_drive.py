@@ -101,7 +101,7 @@ def Callback(data):
     elif (frontAve > 3) and (leftAve > side_thresh) and (rightAve > side_thresh) :
         linear_acc  =  0.01
         angular_acc =  0.005
-        
+
         angular_min = -1.00 * scale
         angular_max = 1.00 * scale
         linear_min  = 0.50 * scale
@@ -111,7 +111,7 @@ def Callback(data):
     else :
         linear_acc  =  0.05
         angular_acc =  0.01
-        
+
         if leftAve > rightAve :
             angular_min = 0.75 * scale
             angular_max = 1.0 * scale
@@ -171,7 +171,7 @@ def setup():
                 linSet = linSet - linear_acc
             else :
                 linSet = randLin
-                
+
         if (randAng > angSet):
             if (randAng > (angSet + angular_acc)):
                 angSet = angSet + angular_acc

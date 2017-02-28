@@ -16,7 +16,7 @@ import roslaunch
 from random import randint
 import time
 import os
-from std_msgs.msg import Empty 
+from std_msgs.msg import Empty
 
 #function that runs the map saver. Saves the map to the maps folder under the new
 #name newMap
@@ -52,14 +52,14 @@ def replay():
 def reset():
     emptyMsg = Empty()
     pub = rospy.Publisher('/reset_time', Empty, queue_size=10)
-    
-    
+
+
     index = 0
     while(index < 10):
         pub.publish(emptyMsg)
-        time.sleep(0.5) 
+        time.sleep(0.5)
         index = index + 1
-    
+
 if __name__ == '__main__':
     try:
         rospy.init_node('replay', anonymous=False)
