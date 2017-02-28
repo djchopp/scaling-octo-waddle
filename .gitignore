@@ -1,3 +1,7 @@
+**/bags/*.bag
+**/maps/*.pgm
+**/maps/*.yaml
+
 devel/
 
 build/
