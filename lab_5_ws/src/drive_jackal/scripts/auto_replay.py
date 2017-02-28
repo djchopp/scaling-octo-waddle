@@ -56,4 +56,4 @@ if __name__ == '__main__':
         save()	#save the new map
 
     except rospy.ROSInterruptException:
-rospy.loginfo("map_navigation node terminated.")
+	rospy.loginfo("map_navigation node terminated.")
