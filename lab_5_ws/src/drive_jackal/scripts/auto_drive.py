@@ -20,8 +20,8 @@ angular_min = -0.25
 linear_min  = -0.5
 angular_max =  0.25
 linear_max  =  0.5
-linear_acc  =  0.01
-angular_acc =  0.005
+linear_acc  =  0.001
+angular_acc =  0.0005
 
 start_time  =  0
 
@@ -99,8 +99,8 @@ def Callback(data):
 
     # All Clear, randomly drive forward with varying turn
     elif (frontAve > 3) and (leftAve > side_thresh) and (rightAve > side_thresh) :
-        linear_acc  =  0.01
-        angular_acc =  0.005
+        linear_acc  =  0.001
+        angular_acc =  0.0005
         
         angular_min = -1.00 * scale
         angular_max = 1.00 * scale
@@ -109,8 +109,8 @@ def Callback(data):
 
     # Close to a wall on one side, turn to side with most time
     else :
-        linear_acc  =  0.01
-        angular_acc =  0.005
+        linear_acc  =  0.005
+        angular_acc =  0.001
         
         if leftAve > rightAve :
             angular_min = 0.75 * scale
@@ -156,7 +156,7 @@ def setup():
             count = count + 1
         else :
             count = 0
-            countLimit = random.randrange(10,30)
+            countLimit = random.randrange(10,25)
             randLin = random.uniform(linear_min,linear_max)
             randAng = random.uniform(angular_min,angular_max)
 
