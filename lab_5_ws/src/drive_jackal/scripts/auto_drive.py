@@ -20,8 +20,8 @@ angular_min = -0.25
 linear_min  = -0.5
 angular_max =  0.25
 linear_max  =  0.5
-linear_acc  =  0.001
-angular_acc =  0.0005
+linear_acc  =  0.01
+angular_acc =  0.005
 
 start_time  =  0
 
@@ -109,8 +109,8 @@ def Callback(data):
 
     # Close to a wall on one side, turn to side with most time
     else :
-        linear_acc  =  0.005
-        angular_acc =  0.001
+        linear_acc  =  0.05
+        angular_acc =  0.01
         
         if leftAve > rightAve :
             angular_min = 0.75 * scale
