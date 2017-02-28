@@ -15,7 +15,7 @@ from sensor_msgs.msg import LaserScan
 
 
 # Global variables for random bounds
-scale       =  0.4
+scale       =  0.5
 angular_min = -0.25
 linear_min  = -0.5
 angular_max =  0.25
@@ -137,7 +137,7 @@ def setup():
     randAng = float(0.0)
 
     # loop
-    while not time.time()-start_time>60:
+    while not time.time()-start_time>300:
 
         # generate random movement mapping at random interval
         if count < countLimit :
