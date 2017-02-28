@@ -20,8 +20,8 @@ angular_min = -0.25
 linear_min  = -0.5
 angular_max =  0.25
 linear_max  =  0.5
-linear_acc  =  0.05
-angular_acc =  0.025
+linear_acc  =  0.01
+angular_acc =  0.005
 
 start_time  =  0
 
@@ -90,6 +90,8 @@ def Callback(data):
 
     # Too close in front, turn left and slowly back up
     if frontAve < 1 :
+        linear_acc  =  1.0
+        angular_acc =  1.0
         angular_min = 0.25 * scale
         angular_max = 0.5  * scale
         linear_min  = -0.05 * scale
@@ -97,13 +99,19 @@ def Callback(data):
 
     # All Clear, randomly drive forward with varying turn
     elif (frontAve > 3) and (leftAve > side_thresh) and (rightAve > side_thresh) :
-        angular_min = -1.25 * scale
-        angular_max = 1.25 * scale
+        linear_acc  =  0.01
+        angular_acc =  0.005
+        
+        angular_min = -1.00 * scale
+        angular_max = 1.00 * scale
         linear_min  = 0.50 * scale
         linear_max  = 1.0 * scale
 
     # Close to a wall on one side, turn to side with most time
     else :
+        linear_acc  =  0.01
+        angular_acc =  0.005
+        
         if leftAve > rightAve :
             angular_min = 0.75 * scale
             angular_max = 1.0 * scale
@@ -127,7 +135,7 @@ def setup():
     # subscribe to all
     rospy.Subscriber("/scan", LaserScan, Callback)
     # rate = rospy.Rate(user_rate)
-    rate = rospy.Rate(50)
+    rate = rospy.Rate(100)
 
     # publish to cmd_vel of the jackal
     pub = rospy.Publisher("/cmd_vel", Twist, queue_size=10)
@@ -141,7 +149,7 @@ def setup():
     angSet = float(0.0)
 
     # loop
-    while not time.time()-start_time>300:
+    while not time.time()-start_time>60:
 
         # generate random movement mapping at random interval
         if count < countLimit :
