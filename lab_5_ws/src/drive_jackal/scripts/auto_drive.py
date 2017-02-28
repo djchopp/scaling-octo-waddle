@@ -26,10 +26,10 @@ angular_acc =  0.0005
 start_time  =  0
 
 # Constants for laser averaging
-front_delta = 12.5
-side_ang    = 25
+front_delta = 15
+side_ang    = 30
 side_delta  = 15
-side_thresh = 2
+side_thresh = 1.5
 
 
 # Radian to degree function
@@ -99,8 +99,8 @@ def Callback(data):
 
     # All Clear, randomly drive forward with varying turn
     elif (frontAve > 3) and (leftAve > side_thresh) and (rightAve > side_thresh) :
-        linear_acc  =  0.001
-        angular_acc =  0.0005
+        linear_acc  =  0.01
+        angular_acc =  0.005
         
         angular_min = -1.00 * scale
         angular_max = 1.00 * scale
