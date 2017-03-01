@@ -15,13 +15,24 @@ from sensor_msgs.msg import LaserScan
 
 
 # Global variables for random bounds
-scale       =  0.65
+# overall scale of autodrive. Smaller = slower
+scale       =  0.65 
+
+# Initialize globals
+
+# Bounds on angular random value
 angular_min =  0
-linear_min  =  0
 angular_max =  0
+
+# Bounds on linear random value
+linear_min  =  0
 linear_max  =  0
+
+# Max acceleration figure to smooth motion
 linear_acc  =  0.01
 angular_acc =  0.005
+
+# Bounds on run counter random value
 count_min = 25
 count_max = 40
 
@@ -56,7 +67,7 @@ def getSum(start, end, data):
     return angSum
 
 
-# Averaged Sum of scan points function
+# Minimum of scan points function
 def getMin(start, end, data):
     angSum = float(0.0)
     index = start + 1
@@ -81,7 +92,7 @@ def Callback(data):
     sideOffset = int(side_delta / toAng(data.angle_increment))
     zeroOffset = int(front_delta / toAng(data.angle_increment))
     
-    # Compute averages for left, right, and front laser scan spans
+    # Compute minimums for left, right, and front laser scan spans
     leftAve  = getMin(leftAng, leftAng + sideOffset, data)
     rightAve = getMin(rightAng - sideOffset, rightAng, data)
     frontAve = getMin(zeroAng - zeroOffset, zeroAng + zeroOffset, data)
