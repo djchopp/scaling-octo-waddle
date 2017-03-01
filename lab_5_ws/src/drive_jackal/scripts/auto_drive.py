@@ -100,7 +100,6 @@ def Callback(data):
         escape_command = 1
 
     # All Clear, randomly drive forward with varying turn
-<<<<<<< HEAD
     elif (frontAve > 1.75) and (leftAve > side_thresh) and (rightAve > side_thresh) :
         linear_acc  =  0.00005 * scale
         angular_acc =  0.00001 * scale
@@ -108,7 +107,7 @@ def Callback(data):
         angular_min = -0.5 * scale
         angular_max = 0.5 * scale
         linear_min  = 0.75 * scale
-=======
+        
     elif (frontAve > 3) and (leftAve > side_thresh) and (rightAve > side_thresh) :
         linear_acc  =  0.01
         angular_acc =  0.005
@@ -116,22 +115,20 @@ def Callback(data):
         angular_min = -1.00 * scale
         angular_max = 1.00 * scale
         linear_min  = 0.50 * scale
->>>>>>> e8eda263c7b398480977ff166e14b395065ad0f6
+
         linear_max  = 1.0 * scale
         danger_flag = 0
 
     # Close to a wall on one side, turn to side with most time
     else :
-<<<<<<< HEAD
+
         linear_acc  =  0.00005 * scale
         angular_acc =  0.00001 * scale
         escape_command = 1
         
-=======
         linear_acc  =  0.05
         angular_acc =  0.01
 
->>>>>>> e8eda263c7b398480977ff166e14b395065ad0f6
         if leftAve > rightAve :
             angular_min = 0.75 * scale
             angular_max = 1.0 * scale
