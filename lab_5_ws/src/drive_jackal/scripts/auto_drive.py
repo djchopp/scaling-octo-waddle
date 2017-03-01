@@ -15,22 +15,23 @@ from sensor_msgs.msg import LaserScan
 
 
 # Global variables for random bounds
-scale       =  0.75
-angular_min = -0.25
-linear_min  = -0.5
-angular_max =  0.25
-linear_max  =  0.5
+scale       =  0.65
+angular_min =  0
+linear_min  =  0
+angular_max =  0
+linear_max  =  0
 linear_acc  =  0.01
 angular_acc =  0.005
 
 start_time  =  0
+escape_command = 0
+danger_flag = 0
 
 # Constants for laser averaging
 front_delta = 15
 side_ang    = 30
 side_delta  = 15
-side_thresh = 1.5
-
+side_thresh = 0.75
 
 # Radian to degree function
 def toAng(rad):
@@ -69,7 +70,7 @@ def getMin(start, end, data):
 
 # define callback for twist
 def Callback(data):
-    global linear_min, linear_max, angular_min, angular_max
+    global linear_min, linear_max, angular_min, angular_max, escape_command, danger_flag
 
     # Calculate front, left, and right angles in the data array
     zeroAng    = int((((abs(data.angle_min) + abs(data.angle_max)) / data.angle_increment) / 2) - 1)
@@ -77,7 +78,7 @@ def Callback(data):
     rightAng   = zeroAng - int(side_ang / toAng(data.angle_increment))
     sideOffset = int(side_delta / toAng(data.angle_increment))
     zeroOffset = int(front_delta / toAng(data.angle_increment))
-
+    
     # Compute averages for left, right, and front laser scan spans
     leftAve  = getMin(leftAng, leftAng + sideOffset, data)
     rightAve = getMin(rightAng - sideOffset, rightAng, data)
@@ -89,15 +90,25 @@ def Callback(data):
     # Set the threshold levels for randomization
 
     # Too close in front, turn left and slowly back up
-    if frontAve < 1 :
-        linear_acc  =  1.0
-        angular_acc =  1.0
+    if frontAve < 0.875 :
+        linear_acc  =  1.0 * scale
+        angular_acc =  1.0 * scale
         angular_min = 0.25 * scale
         angular_max = 0.5  * scale
         linear_min  = -0.05 * scale
         linear_max  = 0 * scale
+        escape_command = 1
 
     # All Clear, randomly drive forward with varying turn
+<<<<<<< HEAD
+    elif (frontAve > 1.75) and (leftAve > side_thresh) and (rightAve > side_thresh) :
+        linear_acc  =  0.00005 * scale
+        angular_acc =  0.00001 * scale
+        
+        angular_min = -0.5 * scale
+        angular_max = 0.5 * scale
+        linear_min  = 0.75 * scale
+=======
     elif (frontAve > 3) and (leftAve > side_thresh) and (rightAve > side_thresh) :
         linear_acc  =  0.01
         angular_acc =  0.005
@@ -105,28 +116,37 @@ def Callback(data):
         angular_min = -1.00 * scale
         angular_max = 1.00 * scale
         linear_min  = 0.50 * scale
+>>>>>>> e8eda263c7b398480977ff166e14b395065ad0f6
         linear_max  = 1.0 * scale
+        danger_flag = 0
 
     # Close to a wall on one side, turn to side with most time
     else :
+<<<<<<< HEAD
+        linear_acc  =  0.00005 * scale
+        angular_acc =  0.00001 * scale
+        escape_command = 1
+        
+=======
         linear_acc  =  0.05
         angular_acc =  0.01
 
+>>>>>>> e8eda263c7b398480977ff166e14b395065ad0f6
         if leftAve > rightAve :
             angular_min = 0.75 * scale
             angular_max = 1.0 * scale
             linear_min  = 0.25 * scale
-            linear_max  = 0.75 * scale
+            linear_max  = 0.50 * scale
         else :
             angular_min = -1.0 * scale
             angular_max = -0.75 * scale
             linear_min  = 0.25 * scale
-            linear_max  = 0.75 * scale
+            linear_max  = 0.50 * scale
 
 
 # define setup and run routine
 def setup():
-    global start_time
+    global start_time, escape_command, danger_flag
     start_time = time.time()
 
     # create node for listening to twist messages
@@ -149,14 +169,19 @@ def setup():
     angSet = float(0.0)
 
     # loop
-    while not time.time()-start_time>60:
+    while not time.time()-start_time>80:
 
         # generate random movement mapping at random interval
         if count < countLimit :
-            count = count + 1
+            if (escape_command == 1) and (danger_flag == 0):
+                danger_flag = 1
+                escape_command = 0
+                count = countLimit
+            else :
+                count = count + 1
         else :
             count = 0
-            countLimit = random.randrange(10,25)
+            countLimit = random.randrange(25,40)
             randLin = random.uniform(linear_min,linear_max)
             randAng = random.uniform(angular_min,angular_max)
 
