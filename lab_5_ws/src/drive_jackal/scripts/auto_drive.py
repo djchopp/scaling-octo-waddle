@@ -22,6 +22,8 @@ angular_max =  0
 linear_max  =  0
 linear_acc  =  0.01
 angular_acc =  0.005
+count_min = 25
+count_max = 40
 
 start_time  =  0
 escape_command = 0
@@ -30,8 +32,8 @@ danger_flag = 0
 # Constants for laser averaging
 front_delta = 15
 side_ang    = 30
-side_delta  = 15
-side_thresh = 0.75
+side_delta  = 20
+side_thresh = 0.875
 
 # Radian to degree function
 def toAng(rad):
@@ -90,13 +92,16 @@ def Callback(data):
     # Set the threshold levels for randomization
 
     # Too close in front, turn left and slowly back up
-    if frontAve < 0.875 :
+    if frontAve < 1 :
         linear_acc  =  1.0 * scale
         angular_acc =  1.0 * scale
-        angular_min = 0.25 * scale
+        
+        angular_min = 0.3 * scale
         angular_max = 0.5  * scale
+        
         linear_min  = -0.05 * scale
         linear_max  = 0 * scale
+        
         escape_command = 1
 
     # All Clear, randomly drive forward with varying turn
@@ -104,39 +109,32 @@ def Callback(data):
         linear_acc  =  0.00005 * scale
         angular_acc =  0.00001 * scale
         
-        angular_min = -0.5 * scale
-        angular_max = 0.5 * scale
-        linear_min  = 0.75 * scale
+        angular_min = -0.625 * scale
+        angular_max = 0.625 * scale
         
-    elif (frontAve > 3) and (leftAve > side_thresh) and (rightAve > side_thresh) :
-        linear_acc  =  0.01
-        angular_acc =  0.005
-
-        angular_min = -1.00 * scale
-        angular_max = 1.00 * scale
-        linear_min  = 0.50 * scale
-
+        linear_min  = 0.75 * scale
         linear_max  = 1.0 * scale
+        
         danger_flag = 0
 
     # Close to a wall on one side, turn to side with most time
     else :
-
         linear_acc  =  0.00005 * scale
         angular_acc =  0.00001 * scale
-        escape_command = 1
         
-        linear_acc  =  0.05
-        angular_acc =  0.01
+        escape_command = 1
 
         if leftAve > rightAve :
             angular_min = 0.75 * scale
             angular_max = 1.0 * scale
+            
             linear_min  = 0.25 * scale
             linear_max  = 0.50 * scale
+            
         else :
             angular_min = -1.0 * scale
             angular_max = -0.75 * scale
+            
             linear_min  = 0.25 * scale
             linear_max  = 0.50 * scale
 
@@ -159,14 +157,14 @@ def setup():
 
     # Variables for messages and timing
     count = 0
-    countLimit = random.randrange(5,25)
+    countLimit = random.randrange(count_min,count_max)
     randLin = float(0.0)
     randAng = float(0.0)
     linSet = float(0.0)
     angSet = float(0.0)
 
     # loop
-    while not time.time()-start_time>80:
+    while not time.time()-start_time>(60*7):
 
         # generate random movement mapping at random interval
         if count < countLimit :
@@ -178,7 +176,7 @@ def setup():
                 count = count + 1
         else :
             count = 0
-            countLimit = random.randrange(25,40)
+            countLimit = random.randrange(count_min,count_max)
             randLin = random.uniform(linear_min,linear_max)
             randAng = random.uniform(angular_min,angular_max)
 
